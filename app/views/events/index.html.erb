@@ -1,0 +1,29 @@
+
+<div class="row">
+  <div class="col-lg-8">
+    <h3>Last events</h3>  
+    <% @events.each do |event| %>
+	<h3><%= event.title %></h3>  
+        <label>Start Date:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <%if event.start_date.present?%><%= l event.start_date, :format => :date_format %><%end%> ,        
+        <label>Due Date:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <%if event.due_date.present?%><%= l event.due_date, :format => :date_format %><%end%><br/>
+        <label>Place:</label>
+        <%= event.place %><br/>
+	 <label>Description:</label>
+	 <%= event.description %><br/>
+	<label>Created:</label><br/>
+     <%@event_owner = event.event_owner(event.user_id)%>
+        <%= @event_owner.email %>
+        <br/>
+        <%= link_to 'Show Details', event, :class=>"btn btn-info btn-small" %>
+        <% if user_signed_in? && event.user_id == current_user.id %>
+    <%= link_to 'Edit', edit_event_path(event), :class=>"btn btn-primary btn-small" %>
+    <%= link_to 'Delete', event, method: :delete, data: { confirm: 'Are you sure?' }, :class=>"btn btn-danger btn-small" %>
+        <%end%><br/><br/>
+    <% end %>
+  
+  
+<%= link_to 'Create an Event', new_event_path, :class=>"btn btn-default btn-primary" %>    
+<br>
+
